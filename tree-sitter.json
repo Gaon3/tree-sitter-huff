@@ -1,0 +1,39 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "huff",
+      "camelcase": "Huff",
+      "title": "Tree-Sitter Huff",
+      "scope": "source.huff",
+      "file-types": [
+        "huff"
+      ],
+      "injection-regex": "^huff$",
+      "class-name": "TreeSitterHuff"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Simple Tree-Sitter parser for Huff, an EVM low level language.",
+    "authors": [
+      {
+        "name": "Gaon3",
+        "url": "https://github.com/Gaon3"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/Gaon3/tree-sitter-huff"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
