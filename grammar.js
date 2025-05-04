@@ -12,77 +12,93 @@ module.exports = grammar({
   extras: ($) => [/\s/, $.comment],
 
   rules: {
-    source_file: ($) => repeat($._top_level_item),
+    source_file: ($) => repeat(choice($.preprocessor, $.definition, $.comment)),
 
-    _top_level_item: ($) =>
-      choice(
-        $.preprocessor,
-        $.solidity_function,
-        $.jump_label_definition,
-        $.macro_definition,
-        $.comment,
+    definition: ($) =>
+      seq(
+        "#define",
+        choice(
+          $.interface_event,
+          $.interface_function,
+          $.jumptable_definition,
+          $.constant_definition,
+          $.macro_definition,
+          $.fn_definition,
+          $.table_definition,
+        ),
+      ),
+
+    // #define function foo() returns ()
+    interface_function: ($) =>
+      seq(
+        "function",
+        $.identifier,
+        $.solidity_parameter_list,
+        optional(repeat1($.solidity_modifier)),
+        optional(seq("returns", $.solidity_parameter_list)),
+      ),
+
+    // #define event Transfer()
+    interface_event: ($) =>
+      seq("event", $.identifier, $.solidity_parameter_list),
+
+    solidity_modifier: ($) =>
+      token(choice("payable", "nonpayable", "view", "returns")),
+    solidity_parameter_list: ($) =>
+      seq("(", optional(commaSep($.solidity_parameter)), ")"),
+    solidity_parameter: ($) =>
+      seq(
+        $.identifier,
+        optional(choice("memory", "calldata")),
+        optional($.identifier),
       ),
 
     // Preprocessor directives
     preprocessor: ($) => seq("#include", $.string),
 
-    solidity_function: ($) =>
-      seq(
-        "#define",
-        "function",
-        field("name", $.identifier),
-        "(",
-        optional($.solidity_parameter_types),
-        ")",
-        optional("nonpayable"),
-        optional("payable"),
-        optional("pure"),
-        optional("view"),
-        optional(seq("returns", "(", optional($.solidity_return_types), ")")),
-      ),
+    macro_name: ($) => $.identifier,
+    parameter: ($) => $.identifier,
+    parameters: ($) => seq($.parameter, repeat(seq(",", $.parameter))),
+    parameter_usage: ($) => seq("<", field("name", $.parameter), ">"),
 
-    solidity_parameter_types: ($) => /[^)]*/,
-    solidity_return_types: ($) => /[^)]*/,
-
-    jump_label_definition: ($) => seq(field("name", $.label_name), ":"),
-    jump_label_reference: ($) => $.label_name,
-
-    label_name: ($) => /[_a-z][_a-z0-9_]*/,
-
-    // Macro definition with explicit equals sign handling
     macro_definition: ($) =>
       seq(
-        "#define",
         "macro",
         $.macro_name,
-        $.parameter_list,
+        seq("(", optional($.parameters), ")"),
         token("="), // Explicit token for equals sign
-        optional($.takes_clause),
-        optional($.returns_clause),
+        optional(seq("takes", "(", $.number, ")")),
+        optional(seq("returns", "(", $.number, ")")),
         $.block,
       ),
 
-    parameter_list: ($) => seq("(", optional($.parameters), ")"),
-
-    parameters: ($) => seq($.parameter, repeat(seq(",", $.parameter))),
-
-    takes_clause: ($) => seq("takes", "(", $.number, ")"),
-    returns_clause: ($) => seq("returns", "(", $.number, ")"),
-
-    // Parameter usage in body - made more specific
-    parameter_usage: ($) => seq("<", field("name", $.identifier), ">"),
-
-    parameter: ($) => $.identifier,
-
-    macro_call: ($) => seq($.macro_name, "(", optional($.arguments), ")"),
-    arguments: ($) => seq($.argument, repeat(seq(",", $.argument))),
-    argument: ($) =>
-      choice(
-        $.literal,
-        $.identifier,
-        $.parameter_usage,
-        $.jump_label_reference,
+    macro_params: ($) =>
+      seq(
+        "(",
+        optional(
+          commaSep(choice($.constant_name, $.literal, $.parameter_usage)),
+        ),
+        ")",
       ),
+
+    macro_call: ($) => seq($.macro_name, $.macro_params),
+
+    fn_definition: ($) =>
+      seq(
+        "fn",
+        $.macro_name,
+        seq("(", optional($.parameters), ")"),
+        token("="), // Explicit token for equals sign
+        optional(seq("takes", "(", $.number, ")")),
+        optional(seq("returns", "(", $.number, ")")),
+        $.block,
+      ),
+
+    fn_call: ($) => seq($.macro_name, $.macro_params),
+
+    label_name: ($) => $.identifier,
+    jump_label_definition: ($) => seq(field("name", $.label_name), ":"),
+    jump_label_reference: ($) => $.label_name,
 
     block: ($) =>
       seq(
@@ -91,13 +107,34 @@ module.exports = grammar({
           choice(
             $.opcode,
             $.literal,
-            $.parameter_usage, // Now properly recognized
+            $.parameter_usage,
             $.macro_call,
             $.comment,
             $.jump_label_definition,
             $.jump_label_reference,
           ),
         ),
+        "}",
+      ),
+
+    constant_name: ($) => $.identifier,
+
+    table_definition: ($) =>
+      seq("table", $.constant_name, "{", repeat($.literal), "}"),
+
+    constant_definition: ($) =>
+      seq(
+        "constant",
+        $.constant_name,
+        token("="), // Explicit token for equals sign
+        $.literal,
+      ),
+
+    jumptable_definition: ($) =>
+      seq(
+        choice("jumptable", "jumptable__packed"),
+        "{",
+        optional(repeat($.literal)),
         "}",
       ),
 
@@ -117,22 +154,22 @@ module.exports = grammar({
         "revert",
       ),
 
-    // Literals
     literal: ($) => choice($.number, $.hex_literal),
     number: ($) => /[0-9]+/,
     hex_literal: ($) => /0x[0-9a-fA-F]+/,
-
-    // Strings
     string: ($) => /"[^"]*"/,
-
-    // Identifiers
     identifier: ($) => /[_a-zA-Z][_a-zA-Z0-9]*/,
-    macro_name: ($) => /[_A-Z][_A-Z0-9_]*/,
-
-    // Comments
     comment: ($) =>
       token(
         choice(seq("//", /.*/), seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
       ),
   },
 });
+
+function commaSep(rule) {
+  return optional(commaSep1(rule));
+}
+
+function commaSep1(rule) {
+  return seq(rule, repeat(seq(",", rule)));
+}

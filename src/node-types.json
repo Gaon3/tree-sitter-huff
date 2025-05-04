@@ -1,47 +1,5 @@
 [
   {
-    "type": "argument",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "jump_label_reference",
-          "named": true
-        },
-        {
-          "type": "literal",
-          "named": true
-        },
-        {
-          "type": "parameter_usage",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "arguments",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "argument",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "block",
     "named": true,
     "fields": {},
@@ -81,6 +39,144 @@
     }
   },
   {
+    "type": "constant_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constant_name",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constant_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constant_definition",
+          "named": true
+        },
+        {
+          "type": "fn_definition",
+          "named": true
+        },
+        {
+          "type": "interface_event",
+          "named": true
+        },
+        {
+          "type": "interface_function",
+          "named": true
+        },
+        {
+          "type": "jumptable_definition",
+          "named": true
+        },
+        {
+          "type": "macro_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fn_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "macro_name",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parameters",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "interface_event",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "solidity_parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "interface_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "solidity_modifier",
+          "named": true
+        },
+        {
+          "type": "solidity_parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "jump_label_definition",
     "named": true,
     "fields": {
@@ -106,6 +202,36 @@
       "types": [
         {
           "type": "label_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jumptable_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "label_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -139,11 +265,11 @@
       "required": true,
       "types": [
         {
-          "type": "arguments",
+          "type": "macro_name",
           "named": true
         },
         {
-          "type": "macro_name",
+          "type": "macro_params",
           "named": true
         }
       ]
@@ -166,15 +292,49 @@
           "named": true
         },
         {
-          "type": "parameter_list",
+          "type": "number",
           "named": true
         },
         {
-          "type": "returns_clause",
+          "type": "parameters",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_params",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constant_name",
           "named": true
         },
         {
-          "type": "takes_clause",
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "parameter_usage",
           "named": true
         }
       ]
@@ -201,21 +361,6 @@
     }
   },
   {
-    "type": "parameter_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "parameters",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "parameter_usage",
     "named": true,
     "fields": {
@@ -224,7 +369,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "parameter",
             "named": true
           }
         ]
@@ -262,59 +407,34 @@
     }
   },
   {
-    "type": "returns_clause",
+    "type": "solidity_parameter",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "number",
+          "type": "identifier",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "solidity_function",
+    "type": "solidity_parameter_list",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "solidity_parameter_types",
-          "named": true
-        },
-        {
-          "type": "solidity_return_types",
+          "type": "solidity_parameter",
           "named": true
         }
       ]
     }
-  },
-  {
-    "type": "solidity_parameter_types",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "solidity_return_types",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "source_file",
@@ -330,34 +450,11 @@
           "named": true
         },
         {
-          "type": "jump_label_definition",
-          "named": true
-        },
-        {
-          "type": "macro_definition",
+          "type": "definition",
           "named": true
         },
         {
           "type": "preprocessor",
-          "named": true
-        },
-        {
-          "type": "solidity_function",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "takes_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "number",
           "named": true
         }
       ]
@@ -408,6 +505,10 @@
     "named": false
   },
   {
+    "type": "calldata",
+    "named": false
+  },
+  {
     "type": "calldataload",
     "named": false
   },
@@ -417,7 +518,19 @@
     "extra": true
   },
   {
+    "type": "constant",
+    "named": false
+  },
+  {
     "type": "dup1",
+    "named": false
+  },
+  {
+    "type": "event",
+    "named": false
+  },
+  {
+    "type": "fn",
     "named": false
   },
   {
@@ -445,36 +558,28 @@
     "named": false
   },
   {
-    "type": "label_name",
-    "named": true
+    "type": "jumptable",
+    "named": false
+  },
+  {
+    "type": "jumptable__packed",
+    "named": false
   },
   {
     "type": "macro",
     "named": false
   },
   {
-    "type": "macro_name",
-    "named": true
+    "type": "memory",
+    "named": false
   },
   {
     "type": "mstore",
     "named": false
   },
   {
-    "type": "nonpayable",
-    "named": false
-  },
-  {
     "type": "number",
     "named": true
-  },
-  {
-    "type": "payable",
-    "named": false
-  },
-  {
-    "type": "pure",
-    "named": false
   },
   {
     "type": "returns",
@@ -489,6 +594,10 @@
     "named": false
   },
   {
+    "type": "solidity_modifier",
+    "named": true
+  },
+  {
     "type": "string",
     "named": true
   },
@@ -498,10 +607,6 @@
   },
   {
     "type": "takes",
-    "named": false
-  },
-  {
-    "type": "view",
     "named": false
   },
   {
