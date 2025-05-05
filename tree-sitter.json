@@ -6,10 +6,9 @@
       "camelcase": "Huff",
       "title": "Tree-Sitter Huff",
       "scope": "source.huff",
-      "file-types": [
-        "huff"
-      ],
+      "file-types": ["huff"],
       "injection-regex": "^huff$",
+      "highlights": "queries/highlights.scm",
       "class-name": "TreeSitterHuff"
     }
   ],
