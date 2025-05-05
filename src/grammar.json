@@ -284,7 +284,7 @@
         }
       ]
     },
-    "parameter_usage": {
+    "parameter_reference": {
       "type": "SEQ",
       "members": [
         {
@@ -326,7 +326,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "macro_name"
           }
         },
         {
@@ -446,15 +446,11 @@
                       "members": [
                         {
                           "type": "SYMBOL",
-                          "name": "identifier"
+                          "name": "constant_reference"
                         },
                         {
                           "type": "SYMBOL",
                           "name": "literal"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "parameter_usage"
                         }
                       ]
                     },
@@ -472,15 +468,11 @@
                             "members": [
                               {
                                 "type": "SYMBOL",
-                                "name": "identifier"
+                                "name": "constant_reference"
                               },
                               {
                                 "type": "SYMBOL",
                                 "name": "literal"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "parameter_usage"
                               }
                             ]
                           }
@@ -513,7 +505,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "macro_name"
           }
         },
         {
@@ -530,7 +522,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "macro_name"
           }
         },
         {
@@ -544,7 +536,7 @@
       "name": "name",
       "content": {
         "type": "SYMBOL",
-        "name": "identifier"
+        "name": "macro_name"
       }
     },
     "block": {
@@ -569,7 +561,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "parameter_usage"
+                "name": "parameter_reference"
               },
               {
                 "type": "SYMBOL",
@@ -625,7 +617,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "constant_name"
           }
         },
         {
@@ -657,7 +649,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "constant_name"
           }
         },
         {
@@ -674,23 +666,36 @@
       ]
     },
     "constant_reference": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
-        {
-          "type": "STRING",
-          "value": "["
-        },
         {
           "type": "FIELD",
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "constant_name"
           }
         },
         {
-          "type": "STRING",
-          "value": "]"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "["
+            },
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "constant_name"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "]"
+            }
+          ]
         }
       ]
     },
@@ -698,50 +703,393 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "dup1"
+          "type": "SYMBOL",
+          "name": "opcode_io"
         },
         {
-          "type": "STRING",
-          "value": "add"
+          "type": "SYMBOL",
+          "name": "opcode_side_effects"
         },
         {
-          "type": "STRING",
-          "value": "swap1"
+          "type": "SYMBOL",
+          "name": "opcode_calculation"
         },
         {
-          "type": "STRING",
-          "value": "calldataload"
+          "type": "SYMBOL",
+          "name": "opcode_stop"
         },
         {
-          "type": "STRING",
-          "value": "shr"
-        },
-        {
-          "type": "STRING",
-          "value": "and"
-        },
-        {
-          "type": "STRING",
-          "value": "jump"
-        },
-        {
-          "type": "STRING",
-          "value": "jumpi"
-        },
-        {
-          "type": "STRING",
-          "value": "iszero"
-        },
-        {
-          "type": "STRING",
-          "value": "mstore"
-        },
-        {
-          "type": "STRING",
-          "value": "revert"
+          "type": "SYMBOL",
+          "name": "opcode_stack"
         }
       ]
+    },
+    "opcode_io": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "chainid"
+          },
+          {
+            "type": "STRING",
+            "value": "sstore"
+          },
+          {
+            "type": "STRING",
+            "value": "sload"
+          },
+          {
+            "type": "STRING",
+            "value": "mstore8"
+          },
+          {
+            "type": "STRING",
+            "value": "mstore"
+          },
+          {
+            "type": "STRING",
+            "value": "mload"
+          },
+          {
+            "type": "STRING",
+            "value": "pop"
+          },
+          {
+            "type": "STRING",
+            "value": "msize"
+          },
+          {
+            "type": "STRING",
+            "value": "balance"
+          },
+          {
+            "type": "STRING",
+            "value": "address"
+          },
+          {
+            "type": "STRING",
+            "value": "returndatacopy"
+          },
+          {
+            "type": "STRING",
+            "value": "returndatasize"
+          },
+          {
+            "type": "STRING",
+            "value": "extcodecopy"
+          },
+          {
+            "type": "STRING",
+            "value": "extcodesize"
+          },
+          {
+            "type": "STRING",
+            "value": "gasprice"
+          },
+          {
+            "type": "STRING",
+            "value": "caller"
+          },
+          {
+            "type": "STRING",
+            "value": "origin"
+          },
+          {
+            "type": "STRING",
+            "value": "gaslimit"
+          },
+          {
+            "type": "STRING",
+            "value": "difficulty"
+          },
+          {
+            "type": "STRING",
+            "value": "number"
+          },
+          {
+            "type": "STRING",
+            "value": "timestamp"
+          },
+          {
+            "type": "STRING",
+            "value": "coinbase"
+          },
+          {
+            "type": "STRING",
+            "value": "blockhash"
+          },
+          {
+            "type": "STRING",
+            "value": "codecopy"
+          },
+          {
+            "type": "STRING",
+            "value": "codesize"
+          },
+          {
+            "type": "STRING",
+            "value": "calldatacopy"
+          },
+          {
+            "type": "STRING",
+            "value": "calldatasize"
+          },
+          {
+            "type": "STRING",
+            "value": "calldataload"
+          },
+          {
+            "type": "STRING",
+            "value": "callvalue"
+          },
+          {
+            "type": "STRING",
+            "value": "gas"
+          }
+        ]
+      }
+    },
+    "opcode_side_effects": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "log4"
+          },
+          {
+            "type": "STRING",
+            "value": "log3"
+          },
+          {
+            "type": "STRING",
+            "value": "log2"
+          },
+          {
+            "type": "STRING",
+            "value": "log1"
+          },
+          {
+            "type": "STRING",
+            "value": "log0"
+          },
+          {
+            "type": "STRING",
+            "value": "jumpdest"
+          },
+          {
+            "type": "STRING",
+            "value": "getpc"
+          },
+          {
+            "type": "STRING",
+            "value": "jumpi"
+          },
+          {
+            "type": "STRING",
+            "value": "jump"
+          },
+          {
+            "type": "STRING",
+            "value": "create2"
+          },
+          {
+            "type": "STRING",
+            "value": "staticcall"
+          },
+          {
+            "type": "STRING",
+            "value": "delegatecall"
+          },
+          {
+            "type": "STRING",
+            "value": "callcode"
+          },
+          {
+            "type": "STRING",
+            "value": "call"
+          },
+          {
+            "type": "STRING",
+            "value": "create"
+          }
+        ]
+      }
+    },
+    "opcode_calculation": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "not"
+          },
+          {
+            "type": "STRING",
+            "value": "xor"
+          },
+          {
+            "type": "STRING",
+            "value": "or"
+          },
+          {
+            "type": "STRING",
+            "value": "and"
+          },
+          {
+            "type": "STRING",
+            "value": "ror"
+          },
+          {
+            "type": "STRING",
+            "value": "rol"
+          },
+          {
+            "type": "STRING",
+            "value": "sar"
+          },
+          {
+            "type": "STRING",
+            "value": "shr"
+          },
+          {
+            "type": "STRING",
+            "value": "shl"
+          },
+          {
+            "type": "STRING",
+            "value": "keccak"
+          },
+          {
+            "type": "STRING",
+            "value": "sha3"
+          },
+          {
+            "type": "STRING",
+            "value": "byte"
+          },
+          {
+            "type": "STRING",
+            "value": "iszero"
+          },
+          {
+            "type": "STRING",
+            "value": "eq"
+          },
+          {
+            "type": "STRING",
+            "value": "sgt"
+          },
+          {
+            "type": "STRING",
+            "value": "slt"
+          },
+          {
+            "type": "STRING",
+            "value": "gt"
+          },
+          {
+            "type": "STRING",
+            "value": "lt"
+          },
+          {
+            "type": "STRING",
+            "value": "signextend"
+          },
+          {
+            "type": "STRING",
+            "value": "exp"
+          },
+          {
+            "type": "STRING",
+            "value": "mulmod"
+          },
+          {
+            "type": "STRING",
+            "value": "addmod"
+          },
+          {
+            "type": "STRING",
+            "value": "smod"
+          },
+          {
+            "type": "STRING",
+            "value": "mod"
+          },
+          {
+            "type": "STRING",
+            "value": "sdiv"
+          },
+          {
+            "type": "STRING",
+            "value": "div"
+          },
+          {
+            "type": "STRING",
+            "value": "sub"
+          },
+          {
+            "type": "STRING",
+            "value": "mul"
+          },
+          {
+            "type": "STRING",
+            "value": "add"
+          }
+        ]
+      }
+    },
+    "opcode_stop": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "selfdestruct"
+          },
+          {
+            "type": "STRING",
+            "value": "invalid"
+          },
+          {
+            "type": "STRING",
+            "value": "revert"
+          },
+          {
+            "type": "STRING",
+            "value": "return"
+          },
+          {
+            "type": "STRING",
+            "value": "stop"
+          }
+        ]
+      }
+    },
+    "opcode_stack": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "(swap1|dup1)[0-6]|(swap|dup)[1-9]|push3[0-2]|push[1-2][0-9]|push[0-9]"
+      }
+    },
+    "label_name": {
+      "type": "PATTERN",
+      "value": "[_a-z][_a-z0-9]*"
+    },
+    "macro_name": {
+      "type": "PATTERN",
+      "value": "_{0,2}[a-zA-Z][_a-zA-Z0-9]*"
+    },
+    "constant_name": {
+      "type": "PATTERN",
+      "value": "[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*"
     },
     "literal": {
       "type": "CHOICE",

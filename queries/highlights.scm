@@ -26,14 +26,16 @@
 
 (solidity_modifier) @keyword.modifier
 
-(macro_definition name: (identifier) @function)
-(macro_call name: (identifier) @function)
+(macro_definition name: (macro_name) @function)
+(macro_call name: (macro_name) @function)
 
-(constant_definition name: (identifier) @constant)
-(constant_reference name: (identifier) @constant)
+(constant_definition name: (constant_name) @constant)
+(constant_reference name: (constant_name) @constant)
 
-(jump_label_definition name: (identifier) @variable.special)
-(jump_label_reference name: (identifier) @variable.special)
+(table_definition name: (constant_name) @constant)
+
+(jump_label_definition name: (macro_name) @label)
+(jump_label_reference name: (macro_name) @label)
 
 
 ; Literals
