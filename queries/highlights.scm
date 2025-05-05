@@ -1,7 +1,7 @@
 ; Preprocessor directives
 (preprocessor) @keyword.directive
 [
-  "#include",
+  "#include"
   "#define"
 ] @keyword.directive
 
@@ -31,8 +31,8 @@
 ; Literals
 (string) @string
 [
-  (number),
-  (hex_literal),
+  (number)
+  (hex_literal)
 ] @number
 
 ; Identifiers
@@ -43,15 +43,12 @@
 
 ; Parameters
 [
-  (parameter),
+  (parameter)
   (parameter_usage)
 ] @parameter
 
 ; Function calls
-[
-  (macro_call),
-  (fn_call)
-] @function.call
+(macro_call) @function.call
 
 ; Punctuation
 [

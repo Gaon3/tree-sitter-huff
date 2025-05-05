@@ -103,6 +103,10 @@
         {
           "type": "macro_definition",
           "named": true
+        },
+        {
+          "type": "table_definition",
+          "named": true
         }
       ]
     }
@@ -461,6 +465,25 @@
     }
   },
   {
+    "type": "table_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constant_name",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "#define",
     "named": false
   },
@@ -603,6 +626,10 @@
   },
   {
     "type": "swap1",
+    "named": false
+  },
+  {
+    "type": "table",
     "named": false
   },
   {

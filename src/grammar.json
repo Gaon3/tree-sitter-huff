@@ -55,6 +55,10 @@
             {
               "type": "SYMBOL",
               "name": "fn_definition"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "table_definition"
             }
           ]
         }
@@ -714,6 +718,34 @@
     "constant_name": {
       "type": "SYMBOL",
       "name": "identifier"
+    },
+    "table_definition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "table"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "constant_name"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "literal"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
     },
     "constant_definition": {
       "type": "SEQ",
