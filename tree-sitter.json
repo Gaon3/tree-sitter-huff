@@ -4,7 +4,6 @@
     {
       "name": "huff",
       "camelcase": "Huff",
-      "title": "Tree-Sitter Huff",
       "scope": "source.huff",
       "file-types": ["huff"],
       "injection-regex": "^huff$",

@@ -20,15 +20,12 @@ module.exports = grammar({
         choice(
           $.interface_event,
           $.interface_function,
-          $.jumptable_definition,
+          $.table_definition,
           $.constant_definition,
           $.macro_definition,
-          $.fn_definition,
-          $.table_definition,
         ),
       ),
 
-    // #define function foo() returns ()
     interface_function: ($) =>
       seq(
         "function",
@@ -38,7 +35,6 @@ module.exports = grammar({
         optional(seq("returns", $.solidity_parameter_list)),
       ),
 
-    // #define event Transfer()
     interface_event: ($) =>
       seq("event", $.identifier, $.solidity_parameter_list),
 
@@ -53,18 +49,15 @@ module.exports = grammar({
         optional($.identifier),
       ),
 
-    // Preprocessor directives
     preprocessor: ($) => seq("#include", $.string),
 
-    macro_name: ($) => $.identifier,
-    parameter: ($) => $.identifier,
-    parameters: ($) => seq($.parameter, repeat(seq(",", $.parameter))),
-    parameter_usage: ($) => seq("<", field("name", $.parameter), ">"),
+    parameters: ($) => seq($.identifier, repeat(seq(",", $.identifier))),
+    parameter_usage: ($) => seq("<", field("name", $.identifier), ">"),
 
     macro_definition: ($) =>
       seq(
-        "macro",
-        $.macro_name,
+        choice("macro", "fn"),
+        field("name", $.identifier),
         seq("(", optional($.parameters), ")"),
         token("="), // Explicit token for equals sign
         optional(seq("takes", "(", $.number, ")")),
@@ -75,30 +68,14 @@ module.exports = grammar({
     macro_params: ($) =>
       seq(
         "(",
-        optional(
-          commaSep(choice($.constant_name, $.literal, $.parameter_usage)),
-        ),
+        optional(commaSep(choice($.identifier, $.literal, $.parameter_usage))),
         ")",
       ),
 
-    macro_call: ($) => seq($.macro_name, $.macro_params),
+    macro_call: ($) => seq(field("name", $.identifier), $.macro_params),
 
-    fn_definition: ($) =>
-      seq(
-        "fn",
-        $.macro_name,
-        seq("(", optional($.parameters), ")"),
-        token("="), // Explicit token for equals sign
-        optional(seq("takes", "(", $.number, ")")),
-        optional(seq("returns", "(", $.number, ")")),
-        $.block,
-      ),
-
-    fn_call: ($) => seq($.macro_name, $.macro_params),
-
-    label_name: ($) => $.identifier,
-    jump_label_definition: ($) => seq(field("name", $.label_name), ":"),
-    jump_label_reference: ($) => $.label_name,
+    jump_label_definition: ($) => seq(field("name", $.identifier), ":"),
+    jump_label_reference: ($) => field("name", $.identifier),
 
     block: ($) =>
       seq(
@@ -112,31 +89,29 @@ module.exports = grammar({
             $.comment,
             $.jump_label_definition,
             $.jump_label_reference,
+            $.constant_reference,
           ),
         ),
         "}",
       ),
 
-    constant_name: ($) => $.identifier,
-
     table_definition: ($) =>
-      seq("table", $.constant_name, "{", repeat($.literal), "}"),
+      seq(
+        choice("table", "jumptable", "jumpable__packed"),
+        field("name", $.identifier),
+        "{",
+        repeat($.literal),
+        "}",
+      ),
 
     constant_definition: ($) =>
       seq(
         "constant",
-        $.constant_name,
+        field("name", $.identifier),
         token("="), // Explicit token for equals sign
         $.literal,
       ),
-
-    jumptable_definition: ($) =>
-      seq(
-        choice("jumptable", "jumptable__packed"),
-        "{",
-        optional(repeat($.literal)),
-        "}",
-      ),
+    constant_reference: ($) => seq("[", field("name", $.identifier), "]"),
 
     // Opcodes (just a few examples)
     opcode: ($) =>

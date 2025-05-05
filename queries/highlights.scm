@@ -7,26 +7,32 @@
 
 ; Keywords
 [
-  "macro"
-  "fn"
-  "function"
-  "event"
   "takes"
   "returns"
-  "constant"
-  "table"
-  "jumptable"
-  "jumptable__packed"
-] @keyword
-
-; Modifiers
-(solidity_modifier) @keyword.modifier
-
-; Types and storage
-[
   "memory"
   "calldata"
+] @keyword
+
+[
+  "macro"
+  "fn"
+  "event"
+  "function"
+  "constant"
+  "table"
 ] @type
+
+(solidity_modifier) @keyword.modifier
+
+(macro_definition name: (identifier) @function)
+(macro_call name: (identifier) @function)
+
+(constant_definition name: (identifier) @constant)
+(constant_reference name: (identifier) @constant)
+
+(jump_label_definition name: (identifier) @variable.special)
+(jump_label_reference name: (identifier) @variable.special)
+
 
 ; Literals
 (string) @string
@@ -37,15 +43,6 @@
 
 ; Identifiers
 (identifier) @variable
-(constant_name) @constant
-(label_name) @label
-(macro_name) @function
-
-; Parameters
-[
-  (parameter)
-  (parameter_usage)
-] @parameter
 
 ; Function calls
 (macro_call) @function.call
@@ -58,9 +55,12 @@
   ")"
   "<"
   ">"
+] @punctuation.delimiter
+
+[
   ":"
   ","
   "="
-] @punctuation.delimiter
+] @punctuation
 
 (comment) @comment
