@@ -1,11 +1,11 @@
-; Preprocessor directives
+(identifier) @variable
+
 (preprocessor) @keyword.directive
 [
   "#include"
   "#define"
 ] @keyword.directive
 
-; Keywords
 [
   "takes"
   "returns"
@@ -21,6 +21,8 @@
   "constant"
   "table"
 ] @type
+
+(opcode) @operator
 
 (solidity_modifier) @keyword.modifier
 
@@ -42,10 +44,6 @@
 ] @number
 
 ; Identifiers
-(identifier) @variable
-
-; Function calls
-(macro_call) @function.call
 
 ; Punctuation
 [
